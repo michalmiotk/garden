@@ -9,7 +9,7 @@ from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 import serial
-
+import asyncio
 
 from logs import log
 from recv_item import RecvItem
@@ -138,7 +138,7 @@ async def temp_inside():
     dict_to_send = {'get': 'temp_inside'}
     bytes_to_send = serialize(dict_to_send)
     send(bytes_to_send)
-    time.sleep(1)
+    await asyncio.sleep(1)
 
     return filter_deque(recv_deque, "temp_inside")
 
@@ -147,7 +147,7 @@ async def temp_outside():
     dict_to_send = {'get': 'temp_outside'}
     bytes_to_send = serialize(dict_to_send)
     send(bytes_to_send)
-    time.sleep(1)
+    await asyncio.sleep(1)
 
     return filter_deque(recv_deque, "temp_outside")
 
@@ -156,7 +156,7 @@ async def air_humidity():
     dict_to_send = {'get': 'air_humidity'}
     bytes_to_send = serialize(dict_to_send)
     send(bytes_to_send)
-    time.sleep(1)
+    await asyncio.sleep(1)
 
     return filter_deque(recv_deque, "air_humidity")
 
@@ -165,7 +165,7 @@ async def soil_humidity():
     dict_to_send = {'get': 'soil_humidity'}
     bytes_to_send = serialize(dict_to_send)
     send(bytes_to_send)
-    time.sleep(1)
+    await asyncio.sleep(1)
 
     return filter_deque(recv_deque, "soil_humidity")
 
@@ -177,7 +177,7 @@ async def lightning():
     dict_to_send = {'get': 'lightning'}
     bytes_to_send = serialize(dict_to_send)
     send(bytes_to_send)
-    time.sleep(1)
+    await asyncio.sleep(1)
 
     return filter_deque(recv_deque, "lightning")
 
@@ -189,7 +189,7 @@ async def water_tank_state():
     dict_to_send = {'get': 'water_tank_state'}
     bytes_to_send = serialize(dict_to_send)
     send(bytes_to_send)
-    time.sleep(1)
+    await asyncio.sleep(1)
 
     return filter_deque(recv_deque, "water_tank_state")
 
@@ -201,7 +201,7 @@ async def battery():
     dict_to_send = {'get': 'battery'}
     bytes_to_send = serialize(dict_to_send)
     send(bytes_to_send)
-    time.sleep(1)
+    await asyncio.sleep(1)
 
     return filter_deque(recv_deque, "battery")
 

@@ -1,0 +1,4 @@
+fastapi
+pyserial
+jinja2
+pytest

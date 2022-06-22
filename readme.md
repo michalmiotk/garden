@@ -11,8 +11,8 @@ Remember to plugin Camera
 sudo docker run -p 8000:8000 -p 8081:8081 --device=/dev/video0 --device=/dev/ttyACM0 -v $(pwd -- "$0")/src:/home/src -t garden 
 ```
 then checkout this addr : https://0.0.0.0:8081 and accept risk - login is admin pass is admin 
-then checkout https://0.0.0.0:8000
-
+then checkout https://0.0.0.0:8000 
+documentation in swageer style is on https://0.0.0.0:8000/docs 
 if you want internet:
 ```
 sudo apt install -y npm
@@ -39,7 +39,7 @@ uvicorn main:app  --host 0.0.0.0 --port 8000 --reload --ssl-keyfile /etc/motion/
 
 to have synthetic uart:
 socat -d -d pty,raw,echo=0 pty,raw,echo=0
-echo "{'cmd':3}" > /dev/pts/1
+echo '{"temp_inside":3}' > /dev/pts/3
 cat < /dev/pts/2
 # run tests
 

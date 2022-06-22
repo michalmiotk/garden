@@ -18,10 +18,6 @@ baudrate = 115200
 send_queue = queue.Queue()
 recv_deque = deque(maxlen=10)
 
-class SerialMock():
-    def write(self, raw_data):
-        log.info("I send"+str(raw_data))
-
 serial_obj = serial.Serial('/dev/ttyACM0', baudrate)
 
 def send_thread(serial_obj, send_queue):
@@ -123,13 +119,21 @@ async def natural_lightning():
     return dict_to_send
 
 
-def filter_deque(in_deque: deque, desired_key: str) -> "RecvItem or str":
+def create_json_response(filter_deque_response: "RecvItem or None", in_deque: deque):
+    if filter_deque_response:
+        filter_deque_response_values = filter_deque_response.recv_dict.values()
+        first_elemnt_of_filter_deque_response_values = list(filter_deque_response_values)[0];
+        return {'val': first_elemnt_of_filter_deque_response_values} 
+    else:
+        return  {"debug_msg": "not found desired_key in "+ str(in_deque)} 
+
+def filter_deque(in_deque: deque, desired_key: str) -> "RecvItem or None":
     for item in in_deque:
         if item.is_actual():
             for key in item.recv_dict.keys():
                 if key == desired_key:
                     return item
-    return "not found response from arduino in deque" + str(in_deque)
+    return None
 
 ##### GETTERS #####
 
@@ -139,8 +143,8 @@ async def temp_inside():
     bytes_to_send = serialize(dict_to_send)
     send(bytes_to_send)
     await asyncio.sleep(1)
-
-    return filter_deque(recv_deque, "temp_inside")
+    deque_response = filter_deque(recv_deque, "temp_inside")
+    return create_json_response(deque_response, recv_deque)
 
 @app.get("/temp_outside")
 async def temp_outside():

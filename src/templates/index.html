@@ -1,1 +1,28 @@
-<meta http-equiv="Refresh" content="0; url='/docs'" />
+
+
+
+<ul>
+    temp_inside
+    <li id="temp_inside">Waiting for server response</li>
+</ul>
+
+<script>
+    function reqListener () {
+      console.log(this.responseText);
+      let el = document.getElementById("temp_inside");
+      console.log(el.innerHTML);
+      const parsed_json = JSON.parse(this.responseText);
+      if( 'debug_msg' in parsed_json){
+            el.innerHTML = parsed_json.debug_msg;
+      }
+      if( 'val' in parsed_json){
+            el.innerHTML = parsed_json.val;
+      }
+    }
+    
+    var oReq = new XMLHttpRequest();
+    oReq.addEventListener("load", reqListener);
+    oReq.open("GET", "{{ url_for('temp_inside') }}" );
+    oReq.send();
+    
+    </script>

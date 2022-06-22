@@ -19,5 +19,5 @@ class RecvItem():
     def __gt__(self, other_recv_item: "RecvItem"):
         return other_recv_item.recv_time > self.recv_time
 
-    def __str__(self):
+    def __repr__(self):
         return str(self.recv_dict) + " recv on " + str(self.recv_time)

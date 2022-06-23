@@ -33,8 +33,7 @@ lt --port 8081
 pip install -r requirements.txt
 sudo apt install motion uvicorn -y
 sudo motion -m -c src/camera0.conf -d 9 -k INFO
-cd src &&
-uvicorn main:app  --host 0.0.0.0 --port 8000 --reload --ssl-keyfile /etc/motion/motion.key --ssl-certfile /etc/motion/motion.crt
+cd src && uvicorn main:app  --host 0.0.0.0 --port 8000 --reload --ssl-keyfile /etc/motion/motion.key --ssl-certfile /etc/motion/motion.crt
 ```
 
 to have synthetic uart:

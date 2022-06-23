@@ -18,7 +18,7 @@ baudrate = 115200
 send_queue = queue.Queue()
 recv_deque = deque(maxlen=10)
 
-serial_obj = serial.Serial('/dev/ttyACM0', baudrate)
+serial_obj = serial.Serial('/dev/ACM0', baudrate)
 
 def send_thread(serial_obj, send_queue):
     while True:
@@ -119,13 +119,13 @@ async def natural_lightning():
     return dict_to_send
 
 
-def create_json_response(filter_deque_response: "RecvItem or None", in_deque: deque):
+def create_json_response(filter_deque_response: "RecvItem or None", in_deque: deque, desired_key:str):
     if filter_deque_response:
         filter_deque_response_values = filter_deque_response.recv_dict.values()
         first_elemnt_of_filter_deque_response_values = list(filter_deque_response_values)[0];
         return {'val': first_elemnt_of_filter_deque_response_values} 
     else:
-        return  {"debug_msg": "not found desired_key in "+ str(in_deque)} 
+        return  {"debug_msg": f"not found {desired_key} key younger than 10sec in "+ str(in_deque)} 
 
 def filter_deque(in_deque: deque, desired_key: str) -> "RecvItem or None":
     for item in in_deque:
@@ -144,7 +144,7 @@ async def temp_inside():
     send(bytes_to_send)
     await asyncio.sleep(1)
     deque_response = filter_deque(recv_deque, "temp_inside")
-    return create_json_response(deque_response, recv_deque)
+    return create_json_response(deque_response, recv_deque, "temp_inside")
 
 @app.get("/temp_outside")
 async def temp_outside():
@@ -153,7 +153,8 @@ async def temp_outside():
     send(bytes_to_send)
     await asyncio.sleep(1)
 
-    return filter_deque(recv_deque, "temp_outside")
+    deque_response = filter_deque(recv_deque, "temp_outside")
+    return create_json_response(deque_response, recv_deque, "temp_outside")
 
 @app.get("/air_humidity")
 async def air_humidity():

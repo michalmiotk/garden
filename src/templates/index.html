@@ -1,28 +1,47 @@
+<head>
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+</head>
+<body>
+      <table class="table table-dark">
+            <tr>
+                  <td>temperature inside</td>
+                  <td id="temp_inside">Waiting for server response</td>
+                  <td><button onclick='callService(&quot;{{ url_for("temp_inside")}}&quot; , &quot;temp_inside&quot;)' class="btn btn-primary">Refresh</button></td>
+            </tr>
+            <tr>
+                  <td>temperature outside</td>
+                  <td id="temp_outside">Waiting for server response</td>
+                  <td><button onclick='callService(&quot;{{ url_for("temp_outside")}}&quot; , &quot;temp_outside&quot;)' class="btn btn-primary">Refresh</button></td>
+            </tr>
+      </table> 
 
-
-
-<ul>
-    temp_inside
-    <li id="temp_inside">Waiting for server response</li>
-</ul>
-
-<script>
-    function reqListener () {
-      console.log(this.responseText);
-      let el = document.getElementById("temp_inside");
-      console.log(el.innerHTML);
-      const parsed_json = JSON.parse(this.responseText);
-      if( 'debug_msg' in parsed_json){
-            el.innerHTML = parsed_json.debug_msg;
-      }
-      if( 'val' in parsed_json){
-            el.innerHTML = parsed_json.val;
-      }
-    }
-    
-    var oReq = new XMLHttpRequest();
-    oReq.addEventListener("load", reqListener);
-    oReq.open("GET", "{{ url_for('temp_inside') }}" );
-    oReq.send();
-    
-    </script>
+      <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+      <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+      <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+      <script>
+            function reqListener (upper_this, element_id) {
+                  console.log(upper_this.responseText);
+                  let el = document.getElementById(element_id);
+                  const parsed_json = JSON.parse(upper_this.responseText);
+                  
+                  if("debug_msg" in parsed_json){
+                        el.innerHTML = parsed_json.debug_msg;
+                  }
+                  if("val" in parsed_json){
+                        el.innerHTML = parsed_json.val;
+                  }
+                  
+            }
+            
+            function callService(url, element_id){
+                  var oReq = new XMLHttpRequest();
+                  oReq.addEventListener("load", function() {
+                        reqListener(this, element_id);
+                  });
+                  oReq.open("GET", url);
+                  oReq.send();
+            }
+            callService('{{ url_for("temp_inside") }}', 'temp_inside');
+            callService('{{ url_for("temp_outside") }}', 'temp_outside');
+      </script>
+</body>

@@ -42,3 +42,8 @@ cat < /dev/pts/2
 # run tests
 
 cd src && pytest
+
+# how it looks
+
+![upper view of index.html](imgs_readme/1.png)
+![bottom view of index.html](imgs_readme/2.png)

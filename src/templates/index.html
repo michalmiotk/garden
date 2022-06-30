@@ -14,11 +14,73 @@
                   <td><button onclick='callService(&quot;{{ url_for("temp_outside")}}&quot; , &quot;temp_outside&quot;)' class="btn btn-primary">Refresh</button></td>
             </tr>
             <tr>
+                  <td>air_humidity</td>
+                  <td id="air_humidity">Waiting for server response</td>
+                  <td><button onclick='callService(&quot;{{ url_for("air_humidity")}}&quot; , &quot;air_humidity&quot;)' class="btn btn-primary">Refresh</button></td>
+            </tr>
+            <tr>
+                  <td>soil_humidity</td>
+                  <td id="soil_humidity">Waiting for server response</td>
+                  <td><button onclick='callService(&quot;{{ url_for("soil_humidity")}}&quot; , &quot;soil_humidity&quot;)' class="btn btn-primary">Refresh</button></td>
+            </tr>
+            <tr>
+                  <td>lightning</td>
+                  <td id="lightning">Waiting for server response</td>
+                  <td><button onclick='callService(&quot;{{ url_for("lightning")}}&quot; , &quot;lightning&quot;)' class="btn btn-primary">Refresh</button></td>
+            </tr>
+            <tr>
+                  <td>water_tank_state</td>
+                  <td id="water_tank_state">Waiting for server response</td>
+                  <td><button onclick='callService(&quot;{{ url_for("water_tank_state")}}&quot; , &quot;water_tank_state&quot;)' class="btn btn-primary">Refresh</button></td>
+            </tr>
+            <tr>
+                  <td>battery</td>
+                  <td id="battery">Waiting for server response</td>
+                  <td><button onclick='callService(&quot;{{ url_for("battery")}}&quot; , &quot;battery&quot;)' class="btn btn-primary">Refresh</button></td>
+            </tr>
+            <tr>
+                  <td>set_temp</td>
+                  <td><input type="number" id="set_temp" value="50" min="0" max="100"></td>
+                  <td><button onclick='set_value("/set_temp/", "set_temp")' class="btn btn-primary">Set</button></td>
+            </tr>
+            <tr>
+                  <td>Set_air_humidity</td>
+                  <td><input type="number" id="set_air_humidity" value="50" min="0" max="100"></td>
+                  <td><button onclick='set_value("/set_air_humidity/", "set_air_humidity")' class="btn btn-primary">Set</button></td>
+            </tr>
+            <tr>
+                  <td>set_soil_humidity</td>
+                  <td><input type="number" id="set_soil_humidity" value="50" min="0" max="100"></td>
+                  <td><button onclick='set_value("/set_soil_humidity/", "set_soil_humidity")' class="btn btn-primary">Set</button></td>
+            </tr>
+            <tr>
+                  <td>set_lightning</td>
+                  <td><input type="number" id="set_lightning" value="50" min="0" max="100"></td>
+                  <td><button onclick='set_value("/set_lightning/", "set_lightning")' class="btn btn-primary">Set</button></td>
+            </tr>
+            <tr>
                   <td>Set fan speed</td>
-                  <td><input type="number" id="fan_speed" value="50" min="0" max="100"></td>
-                  <td><button onclick='set_value("/set_fan_speed/", "fan_speed")'>Set</button></td>
+                  <td><input type="number" id="set_fan_speed" value="50" min="0" max="100"></td>
+                  <td><button onclick='set_value("/set_fan_speed/", "set_fan_speed")' class="btn btn-primary">Set</button></td>
+            </tr>
+            <tr>
+                  <td>air_out</td>
+                  <td>This is command</td>
+                  <td><button onclick='send_cmd("/air_out")' class="btn btn-primary">Send</button></td>
+            </tr>
+            <tr>
+                  <td>water</td>
+                  <td>This is command</td>
+                  <td><button onclick='send_cmd("/water")' class="btn btn-primary">Send</button></td>
+            </tr>
+            <tr>
+                  <td>natural_lightning</td>
+                  <td>This is command</td>
+                  <td><button onclick='send_cmd("/natural_lightning")' class="btn btn-primary">Send</button></td>
             </tr>
       </table> 
+
+      <img style="display: block;-webkit-user-select: none;margin: auto;background-color: hsl(0, 0%, 25%);" src="https://0.0.0.0:8081/">
 
       <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
       <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
@@ -56,7 +118,20 @@
                   xhr.send();
             }
 
+            function send_cmd(url)
+            {
+                  var xhr = new XMLHttpRequest();
+                  xhr.open("POST", url, true);
+                  xhr.setRequestHeader('Content-Type', 'application/json');
+                  xhr.send();
+            }
+
             callService('{{ url_for("temp_inside") }}', 'temp_inside');
             callService('{{ url_for("temp_outside") }}', 'temp_outside');
+            callService('{{ url_for("air_humidity") }}', 'air_humidity');
+            callService('{{ url_for("soil_humidity") }}', 'soil_humidity');
+            callService('{{ url_for("lightning") }}', 'lightning');
+            callService('{{ url_for("water_tank_state") }}', 'water_tank_state');
+            callService('{{ url_for("battery") }}', 'battery');
       </script>
 </body>

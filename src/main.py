@@ -18,7 +18,7 @@ baudrate = 115200
 send_queue = queue.Queue()
 recv_deque = deque(maxlen=10)
 
-serial_obj = serial.Serial('/dev/ttyACM0', baudrate)
+serial_obj = serial.Serial('/dev/ttyUSB0', baudrate)
 
 def send_thread(serial_obj, send_queue):
     while True:
@@ -164,7 +164,8 @@ async def air_humidity():
     send(bytes_to_send)
     await asyncio.sleep(1)
 
-    return filter_deque(recv_deque, "air_humidity")
+    deque_response = filter_deque(recv_deque, "air_humidity")
+    return create_json_response(deque_response, recv_deque, "air_humidity")
 
 @app.get("/soil_humidity")
 async def soil_humidity():
@@ -173,7 +174,8 @@ async def soil_humidity():
     send(bytes_to_send)
     await asyncio.sleep(1)
 
-    return filter_deque(recv_deque, "soil_humidity")
+    deque_response = filter_deque(recv_deque, "soil_humidity")
+    return create_json_response(deque_response, recv_deque, "soil_humidity")
 
 @app.get("/lightning")
 async def lightning():
@@ -185,7 +187,8 @@ async def lightning():
     send(bytes_to_send)
     await asyncio.sleep(1)
 
-    return filter_deque(recv_deque, "lightning")
+    deque_response = filter_deque(recv_deque, "lightning")
+    return create_json_response(deque_response, recv_deque, "lightning")
 
 @app.get("/water_tank_state")
 async def water_tank_state():
@@ -197,7 +200,8 @@ async def water_tank_state():
     send(bytes_to_send)
     await asyncio.sleep(1)
 
-    return filter_deque(recv_deque, "water_tank_state")
+    deque_response = filter_deque(recv_deque, "water_tank_state")
+    return create_json_response(deque_response, recv_deque, "water_tank_state")
 
 @app.get("/battery")
 async def battery():
@@ -209,7 +213,8 @@ async def battery():
     send(bytes_to_send)
     await asyncio.sleep(1)
 
-    return filter_deque(recv_deque, "battery")
+    deque_response = filter_deque(recv_deque, "battery")
+    return create_json_response(deque_response, recv_deque, "battery")
 
 @app.get("/", response_class=HTMLResponse)
 async def main_page(request: Request):

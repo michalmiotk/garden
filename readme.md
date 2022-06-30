@@ -8,7 +8,7 @@ sudo docker build . -t garden
 # run
 Remember to plugin Camera
 ```
-sudo docker run -p 8000:8000 -p 8081:8081 --device=/dev/video0 --device=/dev/ttyACM0 -v $(pwd -- "$0")/src:/home/src -t garden 
+sudo docker run -p 8000:8000 -p 8081:8081 --device=/dev/video0 --device=/dev/ttyACM0 -v $(pwd -- "$0")/src:/home/src -it garden 
 ```
 then checkout this addr : https://0.0.0.0:8081 and accept risk - login is admin pass is admin 
 then checkout https://0.0.0.0:8000 

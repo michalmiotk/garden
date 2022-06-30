@@ -18,12 +18,13 @@ baudrate = 115200
 send_queue = queue.Queue()
 recv_deque = deque(maxlen=10)
 
-serial_obj = serial.Serial('/dev/ACM0', baudrate)
+serial_obj = serial.Serial('/dev/ttyACM0', baudrate)
 
 def send_thread(serial_obj, send_queue):
     while True:
         if not send_queue.empty():
             raw_data = send_queue.get()
+            log.info("I am sending by uart " + str(raw_data))
             serial_obj.write(raw_data + b'\n\r')
 
 

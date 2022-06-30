@@ -13,6 +13,11 @@
                   <td id="temp_outside">Waiting for server response</td>
                   <td><button onclick='callService(&quot;{{ url_for("temp_outside")}}&quot; , &quot;temp_outside&quot;)' class="btn btn-primary">Refresh</button></td>
             </tr>
+            <tr>
+                  <td>Set fan speed</td>
+                  <td><input type="number" id="fan_speed" value="50" min="0" max="100"></td>
+                  <td><button onclick='set_value("/set_fan_speed/", "fan_speed")'>Set</button></td>
+            </tr>
       </table> 
 
       <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
@@ -41,6 +46,16 @@
                   oReq.open("GET", url);
                   oReq.send();
             }
+
+            function set_value(url, element_id)
+            {
+                  var value = document.getElementById(element_id).value;
+                  var xhr = new XMLHttpRequest();
+                  xhr.open("POST", url+value, true);
+                  xhr.setRequestHeader('Content-Type', 'application/json');
+                  xhr.send();
+            }
+
             callService('{{ url_for("temp_inside") }}', 'temp_inside');
             callService('{{ url_for("temp_outside") }}', 'temp_outside');
       </script>

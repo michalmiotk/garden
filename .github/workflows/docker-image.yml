@@ -19,8 +19,9 @@ jobs:
         uses: crazy-max/ghaction-docker-buildx@v1
         with:
           version: latest
-      - name: login to docker hub
-        run: echo $DOCKER_PASSWORD | docker login -u $DOCKER_USER --password-stdin
+      - name: docker login
+        run: | # log into docker hub account
+          docker login -u $DOCKER_USER -p $DOCKER_PASSWORD  
       - name: build the image
         run: |
           docker buildx build --push \

@@ -2,7 +2,7 @@ name: build our image
 
 on:
   push:
-    branches: master
+    branches: master workflow
 # Env variable
 env:
   DOCKER_USER: ${{secrets.DOCKER_USERNAME}}

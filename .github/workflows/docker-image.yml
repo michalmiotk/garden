@@ -12,11 +12,6 @@ jobs:
     steps:
       - name: checkout code
         uses: actions/checkout@v2
-      - name: install buildx
-        id: buildx
-        uses: crazy-max/ghaction-docker-buildx@v1
-        with:
-          version: latest
       - name: docker login
         run: | # log into docker hub account
           docker login -u $DOCKER_USER -p $DOCKER_PASSWORD

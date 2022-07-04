@@ -97,7 +97,6 @@
                   if("val" in parsed_json){
                         el.innerHTML = parsed_json.val;
                   }
-                  
             }
             
             function callService(url, element_id){
@@ -128,7 +127,8 @@
             
             function getAddrOfVideo(){
                   var getUrl = window.location;
-                  var videoUrl = "https://" + getUrl.host + ":8081/";
+                  var hostUrl = getUrl.host.split(":")[0];
+                  var videoUrl = "https://" + hostUrl + ":8081/";
                   return videoUrl;
             }
             console.log(getAddrOfVideo());

@@ -1,6 +1,7 @@
 # run
 Remember to plugin Camera
 ```
+sudo docker pull 32233223/garden:latest
 sudo docker run -p 8000:8000 -p 8081:8081 --device=/dev/video0 --device=/dev/ttyUSB0 -v $(pwd -- "$0")/src:/home/src -it 32233223/garden:latest
 ```
 then checkout https://0.0.0.0:8000 and accept risk - login is admin pass is admin 

@@ -3,7 +3,7 @@ name: build our image
 on: [push]
 # Env variable
 env:
-  DOCKER_USER: ${{secrets.DOCKER_USERNAME}}
+  DOCKER_USER: ${{secrets.DOCKER_USER}}
   DOCKER_PASSWORD: ${{secrets.DOCKER_PASSWORD}}
   REPO_NAME: ${{secrets.REPO_NAME}}
 jobs:
@@ -12,6 +12,16 @@ jobs:
     steps:
       - name: checkout code
         uses: actions/checkout@v2
+      - name: install buildx
+        id: buildx
+        uses: crazy-max/ghaction-docker-buildx@v1
+        with:
+          version: latest
       - name: docker login
         run: | # log into docker hub account
-          docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
+          docker login -u $DOCKER_USER -p $DOCKER_PASSWORD  
+      - name: build the image
+        run: |
+          docker buildx build --push \
+            --tag $DOCKER_USER/$REPO_NAME:latest \
+            --platform linux/amd64,linux/arm/v7,linux/arm64 .

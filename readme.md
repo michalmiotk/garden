@@ -1,14 +1,7 @@
-docs on http://127.0.0.1:8000/docs
-
-# install 
-```
-sudo docker build . -t garden
-```
-
 # run
 Remember to plugin Camera
 ```
-sudo docker run -p 8000:8000 -p 8081:8081 --device=/dev/video0 --device=/dev/ttyUSB0 -v $(pwd -- "$0")/src:/home/src -it garden 
+sudo docker run -p 8000:8000 -p 8081:8081 --device=/dev/video0 --device=/dev/ttyUSB0 -v $(pwd -- "$0")/src:/home/src -it 32233223/garden:latest
 ```
 then checkout https://0.0.0.0:8000 and accept risk - login is admin pass is admin 
 documentation in swageer style is on https://0.0.0.0:8000/docs 
@@ -25,9 +18,8 @@ and then in separate console for video url :
 ```
 lt --port 8081
 ```
-
+docs on http://127.0.0.1:8000/docs
 # run in dev mode
-
 ```
 pip install -r requirements.txt
 sudo apt install motion uvicorn -y

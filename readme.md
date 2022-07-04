@@ -1,9 +1,10 @@
 # run
-Remember to plugin Camera and maybe this below:
+if You first time run this repo:
 ```
 sudo ufw allow 8000
 sudo ufw allow 8081
 ```
+Remember to plugin Camera and maybe this below:
 ```
 sudo docker pull 32233223/garden:latest
 sudo docker run -p 8000:8000 -p 8081:8081 --device=/dev/video0 --device=/dev/ttyUSB0 -v $(pwd -- "$0")/src:/home/src -it 32233223/garden:latest

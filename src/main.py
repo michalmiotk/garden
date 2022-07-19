@@ -3,20 +3,34 @@ import json
 import queue
 import time
 from collections import deque
+import requests
 
 from fastapi import FastAPI, Request, Path
-from fastapi.responses import HTMLResponse
+from fastapi.responses import HTMLResponse, Response, StreamingResponse
 from fastapi.templating import Jinja2Templates
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 import serial
 import asyncio
+import cv2
+import shutil
 
 from logs import log
 from recv_item import RecvItem
+from PIL import Image
 
 baudrate = 115200
 send_queue = queue.Queue()
 recv_deque = deque(maxlen=10)
+
+class FakeSerial():
+    def write(self, rr):
+        return '3'
+    def isOpen(self):
+        return True
+    
+    def inWaiting(self):
+        return 0
+        
 
 serial_obj = serial.Serial('/dev/ttyUSB0', baudrate)
 
@@ -57,7 +71,7 @@ def send(raw_data):
 
 app = FastAPI()
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
-templates = Jinja2Templates(directory="templates")
+templates = Jinja2Templates(directory="templates", )
 
 def serialize(dict_to_send: dict()) -> bytes:
     json_to_send = json.dumps(dict_to_send)
@@ -137,6 +151,32 @@ def filter_deque(in_deque: deque, desired_key: str) -> "RecvItem or None":
     return None
 
 ##### GETTERS #####
+@app.get("/generate")
+def generate():
+    while True:
+        time.sleep(1)
+        #imarray = numpy.random.rand(10,10,3) * 255
+        image_url = 'http://127.0.0.1:8081/0/current'
+
+        r = requests.get(image_url, stream = True)
+        filename = 'snapshot.jpeg'
+        # Check if the image was retrieved successfully
+        if r.status_code == 200:
+            # Set decode_content value to True, otherwise the downloaded image file's size will be zero.
+            r.raw.decode_content = True
+            
+            # Open a local file with wb ( write binary ) permission.
+            with open(filename,'wb') as f:
+                shutil.copyfileobj(r.raw, f)
+                
+            print('Image sucessfully Downloaded: ',filename)
+        imarray = cv2.imread(filename)
+        _, frame = cv2.imencode('.jpg', imarray)
+        yield(b'--frame\r\nContent-Type: image/jpg\r\n\r\n' + frame.tobytes() + b'\r\n')
+
+@app.get("/mypage")
+def mypage():
+    return StreamingResponse(generate(), media_type='multipart/x-mixed-replace; boundary=frame')
 
 @app.get("/temp_inside")
 async def temp_inside():

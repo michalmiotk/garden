@@ -3,4 +3,3 @@ pyserial
 jinja2
 pytest
 asyncio
-Pillow

@@ -6,16 +6,15 @@ from collections import deque
 import requests
 
 from fastapi import FastAPI, Request, Path
-from fastapi.responses import HTMLResponse, Response, StreamingResponse
+from fastapi.responses import HTMLResponse, StreamingResponse
 from fastapi.templating import Jinja2Templates
-from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
+from fastapi.security import OAuth2PasswordBearer
 import serial
 import asyncio
 import shutil
 
 from logs import log
 from recv_item import RecvItem
-from PIL import Image
 from fakeserial import FakeSerial
 
 baudrate = 115200

@@ -3,5 +3,4 @@ pyserial
 jinja2
 pytest
 asyncio
-opencv-python
 Pillow
